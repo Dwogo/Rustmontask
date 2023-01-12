@@ -1,4 +1,5 @@
 // use gtk::{prelude::*, Application, ApplicationWindow, Box, Button, Label, Orientation};
+use gtk::{prelude::*, Notebook};
 // use std::process::{Command, Stdio};
 use sysinfo::{ComponentExt, CpuExt, NetworkExt, System, SystemExt};
 
@@ -58,6 +59,22 @@ fn main() {
     println!("System OS version:       {:?}", sys.os_version());
     println!("System host name:        {:?}", sys.host_name());
 
+    println!();
+
+    println!("=> CPU:");
+    // Number of CPUs:
+    println!("NB CPUs: {}", sys.cpus().len());
+
+    let mut brand_iteration = 0;
+    for cpu in sys.cpus() {
+        if brand_iteration == 0 {
+            println!("{}", cpu.brand());
+            brand_iteration = 1;
+        } else {
+            break;
+        }
+    }
+
     loop {
         // First we update all information of our `System` struct.
         sys.refresh_all();
@@ -82,9 +99,7 @@ fn main() {
 
         println!();
 
-        println!("=> CPU:");
-        // Number of CPUs:
-        println!("NB CPUs: {}", sys.cpus().len());
+        // CPU Brand
 
         // CPU frequency
         for cpu in sys.cpus() {
